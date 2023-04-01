@@ -7,12 +7,12 @@ function Fan(executor) {
   this.pendingHandlers = [];
 
   try {
-    executor(resolve.bind(this), reject.bind(this));
+    executor(onResolve.bind(this), onReject.bind(this));
   } catch (e) {
-    reject(e);
+    onReject(e);
   }
 
-  function resolve(result) {
+  function onResolve(result) {
     if (this.state === 'pending') {
       this.state = 'fulfilled';
       this.value = result;
@@ -22,7 +22,7 @@ function Fan(executor) {
     }
   }
 
-  function reject(result) {
+  function onReject(result) {
     if (this.state === 'pending') {
       this.state = 'rejected';
       this.reason = result;
@@ -35,40 +35,40 @@ function Fan(executor) {
 
 Fan.prototype.then = function (onFulfilled, onRejected) {
   var self = this;
-  var promise2 = new Fan(function (resolveFunc, rejectFunc) {
+  var promise2 = new Fan(function (resolve, reject) {
     if (self.state === 'fulfilled') {
       if (typeof onFulfilled === 'function') {
         try {
           var x = onFulfilled(self.value);
-          resolution(promise2, x, resolveFunc, rejectFunc);
+          resolution(promise2, x, resolve, reject);
         } catch (e) {
-          rejectFunc(e);
+          reject(e);
         }
       } else {
-        resolveFunc(self.value);
+        resolve(self.value);
       }
     } else if (self.state === 'rejected') {
       if (typeof onRejected === 'function') {
         try {
           var x = onRejected(self.reason);
-          resolution(promise2, x, resolveFunc, rejectFunc);
+          resolution(promise2, x, resolve, reject);
         } catch (e) {
-          rejectFunc(e);
+          reject(e);
         }
       } else {
-        rejectFunc(self.reason);
+        reject(self.reason);
       }
     } else {
       function onFulfilledHandler() {
         if (typeof onFulfilled === 'function') {
           try {
             var x = onFulfilled(self.value);
-            resolution(promise2, x, resolveFunc, rejectFunc);
+            resolution(promise2, x, resolve, reject);
           } catch (e) {
-            rejectFunc(e);
+            reject(e);
           }
         } else {
-          resolveFunc(self.value);
+          resolve(self.value);
         }
       }
 
@@ -76,12 +76,12 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
         if (typeof onRejected === 'function') {
           try {
             var x = onRejected(self.reason);
-            resolution(promise2, x, resolveFunc, rejectFunc);
+            resolution(promise2, x, resolve, reject);
           } catch (e) {
-            rejectFunc(e);
+            reject(e);
           }
         } else {
-          rejectFunc(self.reason);
+          reject(self.reason);
         }
       }
 
