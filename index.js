@@ -44,15 +44,19 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
         } catch (e) {
           rejectFunc(e);
         }
+      } else {
+        resolveFunc(self.value);
       }
     } else if (self.state === 'rejected') {
       if (typeof onRejected === 'function') {
         try {
-          var x = rejectFunc(self.reason);
+          var x = onRejected(self.reason);
           resolution(promise2, x, resolveFunc, rejectFunc);
         } catch (e) {
           rejectFunc(e);
         }
+      } else {
+        rejectFunc(self.reason);
       }
     } else {
       function onFulfilledHandler() {
@@ -63,17 +67,21 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
           } catch (e) {
             rejectFunc(e);
           }
+        } else {
+          resolveFunc(self.value);
         }
       }
 
       function onRejectedHandler() {
         if (typeof onRejected === 'function') {
           try {
-            var x = rejectFunc(self.reason);
+            var x = onRejected(self.reason);
             resolution(promise2, x, resolveFunc, rejectFunc);
           } catch (e) {
             rejectFunc(e);
           }
+        } else {
+          rejectFunc(self.reason);
         }
       }
 
