@@ -1,0 +1,20 @@
+{
+  "name": "Fan.js",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "promises-aplus-tests adapter",
+    "lint": "eslint ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.36.0",
+    "eslint-config-es5": "^0.5.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.7",
+    "promises-aplus-tests": "^2.1.2"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 5
+  },
+  "env": {
+    "node": true
+  }
+}
