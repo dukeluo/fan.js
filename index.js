@@ -13,22 +13,30 @@ function Fan(executor) {
   }
 
   function onResolve(result) {
-    if (this.state === 'pending') {
-      this.state = 'fulfilled';
-      this.value = result;
-      this.pendingHandlers.forEach(function (handler) {
-        handler.onFulfilledHandler();
-      });
+    var self = this;
+
+    if (self.state === 'pending') {
+      self.state = 'fulfilled';
+      self.value = result;
+      setTimeout(function () {
+        self.pendingHandlers.forEach(function (handler) {
+          handler.onFulfilledHandler();
+        });
+      }, 0);
     }
   }
 
   function onReject(result) {
-    if (this.state === 'pending') {
-      this.state = 'rejected';
-      this.reason = result;
-      this.pendingHandlers.forEach(function (handler) {
-        handler.onRejectedHandler();
-      });
+    var self = this;
+
+    if (self.state === 'pending') {
+      self.state = 'rejected';
+      self.reason = result;
+      setTimeout(function () {
+        self.pendingHandlers.forEach(function (handler) {
+          handler.onRejectedHandler();
+        });
+      }, 0);
     }
   }
 }
