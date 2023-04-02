@@ -111,7 +111,7 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
       reject(new TypeError('Chaining cycle detected!'));
     } else if (x instanceof Fan) {
       if (x.state === 'fulfilled') {
-        resolve(x.value);
+        resolution(promise, x.value, resolve, reject);
       } else if (x.state === 'rejected') {
         reject(x.reason);
       } else {
