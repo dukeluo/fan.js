@@ -46,23 +46,27 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
   var promise2 = new Fan(function (resolve, reject) {
     if (self.state === 'fulfilled') {
       if (typeof onFulfilled === 'function') {
-        try {
-          var x = onFulfilled(self.value);
-          resolution(promise2, x, resolve, reject);
-        } catch (e) {
-          reject(e);
-        }
+        setTimeout(function () {
+          try {
+            var x = onFulfilled(self.value);
+            resolution(promise2, x, resolve, reject);
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
       } else {
         resolve(self.value);
       }
     } else if (self.state === 'rejected') {
       if (typeof onRejected === 'function') {
-        try {
-          var x = onRejected(self.reason);
-          resolution(promise2, x, resolve, reject);
-        } catch (e) {
-          reject(e);
-        }
+        setTimeout(function () {
+          try {
+            var x = onRejected(self.reason);
+            resolution(promise2, x, resolve, reject);
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
       } else {
         reject(self.reason);
       }
