@@ -150,7 +150,9 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
               }
             );
           } catch (e) {
-            reject(e);
+            if (firstCall) {
+              reject(e);
+            }
           }
         } else {
           resolve(x);
