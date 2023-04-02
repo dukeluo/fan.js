@@ -124,7 +124,10 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
           }
         );
       }
-    } else if (typeof x === 'object' || typeof x === 'function') {
+    } else if (
+      (typeof x === 'object' && x !== null) ||
+      typeof x === 'function'
+    ) {
       try {
         var then = x.then;
 
