@@ -132,13 +132,21 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
         var then = x.then;
 
         if (typeof then === 'function') {
+          var firstCall = true;
+
           try {
             then.bind(x)(
               function (y) {
-                resolution(promise, y, resolve, reject);
+                if (firstCall) {
+                  firstCall = false;
+                  resolution(promise, y, resolve, reject);
+                }
               },
               function (r) {
-                reject(r);
+                if (firstCall) {
+                  firstCall = false;
+                  reject(r);
+                }
               }
             );
           } catch (e) {
