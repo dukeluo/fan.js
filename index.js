@@ -38,6 +38,15 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
   var self = this;
   var promise2 = new Fan(function (resolve, reject) {
     if (self.state === 'fulfilled') {
+      fulfilledHandler();
+    } else if (self.state === 'rejected') {
+      rejectedHandler();
+    } else {
+      self.pendingFulfilledHandlers.push(fulfilledHandler);
+      self.pendingRejectedHandlers.push(rejectedHandler);
+    }
+
+    function fulfilledHandler() {
       if (typeof onFulfilled === 'function') {
         setTimeout(function () {
           try {
@@ -50,7 +59,9 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
       } else {
         resolve(self.value);
       }
-    } else if (self.state === 'rejected') {
+    }
+
+    function rejectedHandler() {
       if (typeof onRejected === 'function') {
         setTimeout(function () {
           try {
@@ -63,39 +74,6 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
       } else {
         reject(self.reason);
       }
-    } else {
-      function fulfilledHandler() {
-        if (typeof onFulfilled === 'function') {
-          setTimeout(function () {
-            try {
-              var x = onFulfilled(self.value);
-              resolution(promise2, x, resolve, reject);
-            } catch (e) {
-              reject(e);
-            }
-          }, 0);
-        } else {
-          resolve(self.value);
-        }
-      }
-
-      function rejectedHandler() {
-        if (typeof onRejected === 'function') {
-          setTimeout(function () {
-            try {
-              var x = onRejected(self.reason);
-              resolution(promise2, x, resolve, reject);
-            } catch (e) {
-              reject(e);
-            }
-          }, 0);
-        } else {
-          reject(self.reason);
-        }
-      }
-
-      self.pendingFulfilledHandlers.push(fulfilledHandler);
-      self.pendingRejectedHandlers.push(rejectedHandler);
     }
   });
 
