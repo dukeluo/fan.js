@@ -14,30 +14,22 @@ function Fan(executor) {
   }
 
   function onResolve(result) {
-    var self = this;
-
-    if (self.state === 'pending') {
-      self.state = 'fulfilled';
-      self.value = result;
-      setTimeout(function () {
-        self.pendingFulfilledHandlers.forEach(function (handler) {
-          handler();
-        });
-      }, 0);
+    if (this.state === 'pending') {
+      this.state = 'fulfilled';
+      this.value = result;
+      this.pendingFulfilledHandlers.forEach(function (handler) {
+        handler();
+      });
     }
   }
 
   function onReject(result) {
-    var self = this;
-
-    if (self.state === 'pending') {
-      self.state = 'rejected';
-      self.reason = result;
-      setTimeout(function () {
-        self.pendingRejectedHandlers.forEach(function (handler) {
-          handler();
-        });
-      }, 0);
+    if (this.state === 'pending') {
+      this.state = 'rejected';
+      this.reason = result;
+      this.pendingRejectedHandlers.forEach(function (handler) {
+        handler();
+      });
     }
   }
 }
@@ -74,12 +66,14 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
     } else {
       function fulfilledHandler() {
         if (typeof onFulfilled === 'function') {
-          try {
-            var x = onFulfilled(self.value);
-            resolution(promise2, x, resolve, reject);
-          } catch (e) {
-            reject(e);
-          }
+          setTimeout(function () {
+            try {
+              var x = onFulfilled(self.value);
+              resolution(promise2, x, resolve, reject);
+            } catch (e) {
+              reject(e);
+            }
+          }, 0);
         } else {
           resolve(self.value);
         }
@@ -87,12 +81,14 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
 
       function rejectedHandler() {
         if (typeof onRejected === 'function') {
-          try {
-            var x = onRejected(self.reason);
-            resolution(promise2, x, resolve, reject);
-          } catch (e) {
-            reject(e);
-          }
+          setTimeout(function () {
+            try {
+              var x = onRejected(self.reason);
+              resolution(promise2, x, resolve, reject);
+            } catch (e) {
+              reject(e);
+            }
+          }, 0);
         } else {
           reject(self.reason);
         }
