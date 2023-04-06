@@ -4,7 +4,8 @@ function Fan(executor) {
   this.state = 'pending';
   this.value = null;
   this.reason = null;
-  this.pendingHandlers = [];
+  this.pendingFulfilledHandlers = [];
+  this.pendingRejectedHandlers = [];
 
   try {
     executor(onResolve.bind(this), onReject.bind(this));
@@ -19,8 +20,8 @@ function Fan(executor) {
       self.state = 'fulfilled';
       self.value = result;
       setTimeout(function () {
-        self.pendingHandlers.forEach(function (handler) {
-          handler.onFulfilledHandler();
+        self.pendingFulfilledHandlers.forEach(function (handler) {
+          handler();
         });
       }, 0);
     }
@@ -33,8 +34,8 @@ function Fan(executor) {
       self.state = 'rejected';
       self.reason = result;
       setTimeout(function () {
-        self.pendingHandlers.forEach(function (handler) {
-          handler.onRejectedHandler();
+        self.pendingRejectedHandlers.forEach(function (handler) {
+          handler();
         });
       }, 0);
     }
@@ -71,7 +72,7 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
         reject(self.reason);
       }
     } else {
-      function onFulfilledHandler() {
+      function fulfilledHandler() {
         if (typeof onFulfilled === 'function') {
           try {
             var x = onFulfilled(self.value);
@@ -84,7 +85,7 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
         }
       }
 
-      function onRejectedHandler() {
+      function rejectedHandler() {
         if (typeof onRejected === 'function') {
           try {
             var x = onRejected(self.reason);
@@ -97,10 +98,8 @@ Fan.prototype.then = function (onFulfilled, onRejected) {
         }
       }
 
-      self.pendingHandlers.push({
-        onFulfilledHandler: onFulfilledHandler,
-        onRejectedHandler: onRejectedHandler,
-      });
+      self.pendingFulfilledHandlers.push(fulfilledHandler);
+      self.pendingRejectedHandlers.push(rejectedHandler);
     }
   });
 
