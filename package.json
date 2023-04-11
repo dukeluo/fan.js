@@ -1,14 +1,26 @@
 {
   "name": "fan.js",
   "version": "0.0.1",
-  "description": "",
+  "description": "A simple and easy-to-understand implementation of Promise/A+ spec for learning.",
+  "keywords": [
+    "Promise/A+",
+    "promise",
+    "learning-by-doing",
+    "learning-notes",
+    "learning-resource"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DukeLuo/fan.js.git"
+  },
+  "author": "Huan Luo <dukeluo@outlook.com> (https://shaiwang.life)",
+  "license": "MPL-2.0",
+  "homepage": "https://github.com/DukeLuo/fan.js",
   "main": "index.js",
   "scripts": {
     "test": "promises-aplus-tests adapter",
     "lint": "eslint ."
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "eslint": "^8.36.0",
     "eslint-config-es5": "^0.5.0",
