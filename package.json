@@ -1,5 +1,5 @@
 {
-  "name": "fan.js",
+  "name": "@dukeluo/fanjs",
   "version": "0.0.1",
   "description": "A simple and easy-to-understand implementation of Promise/A+ spec for learning.",
   "keywords": [
