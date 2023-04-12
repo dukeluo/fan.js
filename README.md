@@ -6,6 +6,8 @@
 
 `fan.js` is a implementation of the [Promise/A+](https://github.com/promises-aplus/promises-spec) spec written in ES5. It uses a simple and easy-to-understand style that closely matches every line of the spec. `fan.js` is a good example to reference when creating your own Promise and to help you learn the Promise/A+ spec.
 
+[Live Demo](https://stackblitz.com/edit/node-ucywyy?file=index.js&view=editor)
+
 ## Tasks for Creating Your Own Implementation of Promises/A+ Spec
 - Read the specification with use cases. Do it again if you have no idea how to begin.
 - Define the Promise class or constructor.
